@@ -1,0 +1,3 @@
+#!/bin/bash
+ENVOY_VERSION="0.1-dev"
+echo $ENVOY_VERSION
