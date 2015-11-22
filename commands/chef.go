@@ -9,6 +9,23 @@ import (
 	"os"
 )
 
+type SearchResult struct {
+	Rows []struct {
+		Data struct {
+			Ipaddress string `json:"ipaddress"`
+			Name      string `json:"name"`
+		} `json:"data"`
+		Url string `json:"url"`
+	} `json:"Rows"`
+	Start int `json:"Start"`
+	Total int `json:"Total"`
+}
+
+type Node struct {
+	Ipaddress string
+	Name      string
+}
+
 func ReadKey(keypath string) string {
 	key, err := ioutil.ReadFile(keypath)
 	if err != nil {
@@ -48,23 +65,6 @@ func DoSearch(c *chef.Client, env string) string {
 	return jsonString
 }
 
-type SearchResult struct {
-	Rows []struct {
-		Data struct {
-			Ipaddress string `json:"ipaddress"`
-			Name      string `json:"name"`
-		} `json:"data"`
-		Url string `json:"url"`
-	} `json:"Rows"`
-	Start int `json:"Start"`
-	Total int `json:"Total"`
-}
-
-type Node struct {
-	Ipaddress string
-	Name      string
-}
-
 func CleanSearchResult(jsonBytes []byte) []Node {
 	nodes := []Node{}
 	var data SearchResult
@@ -81,20 +81,4 @@ func CleanSearchResult(jsonBytes []byte) []Node {
 		nodes = append(nodes, newNode)
 	}
 	return nodes
-}
-
-func GetNodes(c *chef.Client) map[string]string {
-	nodeList, err := c.Nodes.List()
-	if err != nil {
-		Log("create: Could not list nodes.", "info")
-	}
-	return nodeList
-}
-
-func GetNode(c *chef.Client, node string) chef.Node {
-	nodeDetail, err := c.Nodes.Get(node)
-	if err != nil {
-		Log(fmt.Sprintf("create: could not get node info for '%s'", node), "info")
-	}
-	return nodeDetail
 }
