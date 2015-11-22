@@ -3,6 +3,7 @@ package commands
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/go-chef/chef"
 	"io/ioutil"
 	"os"
@@ -45,6 +46,41 @@ func DoSearch(c *chef.Client, env string) string {
 	jsonData, _ := json.MarshalIndent(pres, "", "\t")
 	jsonString := string(jsonData)
 	return jsonString
+}
+
+type SearchResult struct {
+	Rows []struct {
+		Data struct {
+			Ipaddress string `json:"ipaddress"`
+			Name      string `json:"name"`
+		} `json:"data"`
+		Url string `json:"url"`
+	} `json:"Rows"`
+	Start int `json:"Start"`
+	Total int `json:"Total"`
+}
+
+type Node struct {
+	Ipaddress string
+	Name      string
+}
+
+func CleanSearchResult(jsonBytes []byte) []Node {
+	nodes := []Node{}
+	var data SearchResult
+	err := json.Unmarshal(jsonBytes, &data)
+
+	if err != nil {
+		spew.Dump(err)
+	}
+
+	for _, node := range data.Rows {
+		ip := node.Data.Ipaddress
+		name := node.Data.Name
+		newNode := Node{Ipaddress: ip, Name: name}
+		nodes = append(nodes, newNode)
+	}
+	return nodes
 }
 
 func GetNodes(c *chef.Client) map[string]string {

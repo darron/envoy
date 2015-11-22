@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -20,9 +21,13 @@ func startCreate(cmd *cobra.Command, args []string) {
 
 	chefConn := Connect(chefKey, NodeName, ChefServerUrl)
 
-	json := DoSearch(chefConn, ChefEnvironment)
+	jsonString := DoSearch(chefConn, ChefEnvironment)
 
-	fmt.Println(json)
+	jsonBytes := []byte(jsonString)
+
+	nodes := CleanSearchResult(jsonBytes)
+
+	spew.Dump(nodes)
 }
 
 func checkFlags() {
