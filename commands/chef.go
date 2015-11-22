@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/go-chef/chef"
 	"io/ioutil"
@@ -30,6 +31,20 @@ func Connect(key, node, url string) *chef.Client {
 		os.Exit(1)
 	}
 	return client
+}
+
+func DoSearch(c *chef.Client, env string) string {
+	part := make(map[string]interface{})
+	part["name"] = []string{"name"}
+	part["ipaddress"] = []string{"ipaddress"}
+	search := fmt.Sprintf("chef_environment:%s AND *:*", env)
+	pres, err := c.Search.PartialExec("node", search, part)
+	if err != nil {
+		Log("create: Error with Chef partial search.", "info")
+	}
+	jsonData, _ := json.MarshalIndent(pres, "", "\t")
+	jsonString := string(jsonData)
+	return jsonString
 }
 
 func GetNodes(c *chef.Client) map[string]string {

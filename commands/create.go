@@ -20,11 +20,9 @@ func startCreate(cmd *cobra.Command, args []string) {
 
 	chefConn := Connect(chefKey, NodeName, ChefServerUrl)
 
-	nodeList := GetNodes(chefConn)
+	json := DoSearch(chefConn, ChefEnvironment)
 
-	for node, value := range nodeList {
-		Log(fmt.Sprintf("node: %s value='%s'", node, value), "debug")
-	}
+	fmt.Println(json)
 }
 
 func checkFlags() {
