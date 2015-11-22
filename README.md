@@ -7,4 +7,8 @@ Example command:
 
 `envoy create -f output.txt -n node-name -s https://chef-server.example.com -e production -k key.pem`
 
-Replacing a Ruby script that did this well until we hit about 1000 nodes and then used up way too much memory.
+This replaces a Ruby script that did this pretty well until we hit about 900 nodes. After that it used way too much memory and became a problem.
+
+Binaries are available on the [releases page](https://github.com/darron/envoy/releases).
+
+Also available as a [Docker image](https://hub.docker.com/r/darron/envoy/).
