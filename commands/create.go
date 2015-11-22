@@ -16,21 +16,14 @@ var createCmd = &cobra.Command{
 func startCreate(cmd *cobra.Command, args []string) {
 	checkFlags()
 
-	ChefKey := ReadKey(ClientKey)
+	chefKey := ReadKey(ClientKey)
 
-	chefConn := Connect(ChefKey, NodeName, ChefServerUrl)
+	chefConn := Connect(chefKey, NodeName, ChefServerUrl)
 
-	if chefConn != nil {
-		Log("create: Got a chef connection.", "info")
+	nodeList := GetNodes(chefConn)
 
-		nodeList, err := chefConn.Nodes.List()
-		if err != nil {
-			Log("create: Could not list nodes.", "info")
-		}
-
-		for node, _ := range nodeList {
-			Log(fmt.Sprintf("node: %s", node), "info")
-		}
+	for node, value := range nodeList {
+		Log(fmt.Sprintf("node: %s value='%s'", node, value), "debug")
 	}
 }
 

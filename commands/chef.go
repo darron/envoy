@@ -31,3 +31,11 @@ func Connect(key, node, url string) *chef.Client {
 	}
 	return client
 }
+
+func GetNodes(c *chef.Client) map[string]string {
+	nodeList, err := c.Nodes.List()
+	if err != nil {
+		Log("create: Could not list nodes.", "info")
+	}
+	return nodeList
+}
