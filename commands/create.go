@@ -23,7 +23,9 @@ func startCreate(cmd *cobra.Command, args []string) {
 
 	nodes := GetNodes(chefConn, ChefEnvironment)
 
-	spew.Dump(nodes)
+	fileContents := RenderFile(nodes)
+
+	spew.Dump(fileContents)
 }
 
 func checkFlags() {

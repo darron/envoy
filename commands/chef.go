@@ -7,6 +7,7 @@ import (
 	"github.com/go-chef/chef"
 	"io/ioutil"
 	"os"
+	"time"
 )
 
 type SearchResult struct {
@@ -88,4 +89,15 @@ func CleanSearchResult(jsonBytes []byte) []Node {
 		nodes = append(nodes, newNode)
 	}
 	return nodes
+}
+
+func RenderFile(n []Node) string {
+	t := time.Now()
+	text := fmt.Sprintf("# Built on %s\n", t.UTC().Format(time.UnixDate))
+	text += fmt.Sprintf("# For environment '%s' on '%s'\n", ChefEnvironment, ChefServerUrl)
+	for _, node := range n {
+		each := fmt.Sprintf("%s %s\n", node.Name, node.Ipaddress)
+		text += each
+	}
+	return text
 }
