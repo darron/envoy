@@ -51,6 +51,13 @@ func Connect(key, node, url string) *chef.Client {
 	return client
 }
 
+func GetNodes(c *chef.Client, env string) []Node {
+	jsonString := DoSearch(c, env)
+	jsonBytes := []byte(jsonString)
+	nodes := CleanSearchResult(jsonBytes)
+	return nodes
+}
+
 func DoSearch(c *chef.Client, env string) string {
 	part := make(map[string]interface{})
 	part["name"] = []string{"name"}

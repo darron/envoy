@@ -21,11 +21,7 @@ func startCreate(cmd *cobra.Command, args []string) {
 
 	chefConn := Connect(chefKey, NodeName, ChefServerUrl)
 
-	jsonString := DoSearch(chefConn, ChefEnvironment)
-
-	jsonBytes := []byte(jsonString)
-
-	nodes := CleanSearchResult(jsonBytes)
+	nodes := GetNodes(chefConn, ChefEnvironment)
 
 	spew.Dump(nodes)
 }
