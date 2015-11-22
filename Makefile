@@ -9,6 +9,7 @@ deps:
 	go get github.com/spf13/cobra
 	go get github.com/PagerDuty/godspeed
 	go get github.com/go-chef/chef
+	go get github.com/davecgh/go-spew/spew
 
 format:
 	gofmt -w .
