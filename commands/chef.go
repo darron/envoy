@@ -96,8 +96,10 @@ func RenderFile(n []Node) string {
 	text := fmt.Sprintf("# Built on %s\n", t.UTC().Format(time.UnixDate))
 	text += fmt.Sprintf("# For environment '%s' on '%s'\n", ChefEnvironment, ChefServerUrl)
 	for _, node := range n {
-		each := fmt.Sprintf("%s %s\n", node.Name, node.Ipaddress)
-		text += each
+		if node.Name != "" && node.Ipaddress != "" {
+			each := fmt.Sprintf("%s %s\n", node.Ipaddress, node.Name)
+			text += each
+		}
 	}
 	return text
 }

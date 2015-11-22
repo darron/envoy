@@ -2,7 +2,6 @@ package commands
 
 import (
 	"fmt"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -25,7 +24,7 @@ func startCreate(cmd *cobra.Command, args []string) {
 
 	fileContents := RenderFile(nodes)
 
-	spew.Dump(fileContents)
+	WriteFile(fileContents, FiletoWrite)
 }
 
 func checkFlags() {
