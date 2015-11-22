@@ -39,3 +39,11 @@ func GetNodes(c *chef.Client) map[string]string {
 	}
 	return nodeList
 }
+
+func GetNode(c *chef.Client, node string) chef.Node {
+	nodeDetail, err := c.Nodes.Get(node)
+	if err != nil {
+		Log(fmt.Sprintf("create: could not get node info for '%s'", node), "info")
+	}
+	return nodeDetail
+}
