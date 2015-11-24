@@ -16,10 +16,12 @@ var RootCmd = &cobra.Command{
 }
 
 var (
-	NodeName        string
-	ChefServerUrl   string
-	ChefEnvironment string
-	ClientKey       string
+	NodeName         string
+	ChefServerUrl    string
+	ChefEnvironment  string
+	ClientKey        string
+	DogStatsd        bool
+	DogStatsdAddress string
 )
 
 func init() {
@@ -27,4 +29,6 @@ func init() {
 	RootCmd.PersistentFlags().StringVarP(&ChefServerUrl, "server", "s", "", "Chef Server url.")
 	RootCmd.PersistentFlags().StringVarP(&ChefEnvironment, "environment", "e", "", "Chef Server environment.")
 	RootCmd.PersistentFlags().StringVarP(&ClientKey, "key", "k", "", "Chef client key.")
+	RootCmd.PersistentFlags().BoolVarP(&DogStatsd, "dogstatsd", "d", false, "Send metrics to Dogstatsd")
+	RootCmd.PersistentFlags().StringVarP(&DogStatsdAddress, "dogstatsd_address", "D", "localhost", "Address for dogstatsd server.")
 }

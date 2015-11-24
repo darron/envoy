@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"os"
+	"time"
 )
 
 var createCmd = &cobra.Command{
@@ -15,6 +16,7 @@ var createCmd = &cobra.Command{
 
 func startCreate(cmd *cobra.Command, args []string) {
 	checkFlags()
+	start := time.Now()
 
 	chefKey := ReadKey(ClientKey)
 
@@ -25,6 +27,8 @@ func startCreate(cmd *cobra.Command, args []string) {
 	fileContents := RenderFile(nodes)
 
 	WriteFile(fileContents, FiletoWrite)
+
+	SendStats(nodes, start)
 }
 
 func checkFlags() {
