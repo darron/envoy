@@ -1,3 +1,3 @@
 #!/bin/bash
-ENVOY_VERSION="0.2-dev"
+ENVOY_VERSION="0.2"
 echo $ENVOY_VERSION
