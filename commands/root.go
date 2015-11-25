@@ -22,6 +22,8 @@ var (
 	ClientKey        string
 	DogStatsd        bool
 	DogStatsdAddress string
+	DatadogAPIKey    string
+	DatadogAPPKey    string
 )
 
 func init() {
@@ -31,4 +33,6 @@ func init() {
 	RootCmd.PersistentFlags().StringVarP(&ClientKey, "key", "k", "", "Chef client key.")
 	RootCmd.PersistentFlags().BoolVarP(&DogStatsd, "dogstatsd", "d", false, "Send metrics to Dogstatsd")
 	RootCmd.PersistentFlags().StringVarP(&DogStatsdAddress, "dogstatsd_address", "D", "localhost", "Address for dogstatsd server.")
+	RootCmd.PersistentFlags().StringVarP(&DatadogAPIKey, "datadog_api_key", "a", "", "Datadog API Key")
+	RootCmd.PersistentFlags().StringVarP(&DatadogAPPKey, "datadog_app_key", "A", "", "Datadog App Key")
 }

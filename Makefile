@@ -10,6 +10,7 @@ deps:
 	go get github.com/PagerDuty/godspeed
 	go get github.com/go-chef/chef
 	go get github.com/davecgh/go-spew/spew
+	go get github.com/zorkian/go-datadog-api
 
 format:
 	gofmt -w .

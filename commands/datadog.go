@@ -3,21 +3,45 @@ package commands
 import (
 	"fmt"
 	"github.com/PagerDuty/godspeed"
+	"github.com/zorkian/go-datadog-api"
 	"time"
 )
 
 func SendStats(nodes []Node, start time.Time) {
 	elapsed := time.Since(start)
+	hostCount := int(len(nodes))
+	milliseconds := int64(elapsed / time.Millisecond)
+	tags := make([]string, 0)
+	envTag := fmt.Sprintf("environment:%s", ChefEnvironment)
+	tags = append(tags, envTag)
 	if DogStatsd {
-		hostCount := int(len(nodes))
-		milliseconds := int64(elapsed / time.Millisecond)
 		statsd, _ := godspeed.New(DogStatsdAddress, godspeed.DefaultPort, false)
 		defer statsd.Conn.Close()
-		tags := make([]string, 0)
-		envTag := fmt.Sprintf("environment:%s", ChefEnvironment)
-		tags = append(tags, envTag)
 		statsd.Gauge("envoy.time", float64(milliseconds), tags)
 		statsd.Gauge("envoy.hosts", float64(hostCount), tags)
 		Log(fmt.Sprintf("create: dogstatsd='true' time='%s' hosts='%d'", elapsed, hostCount), "info")
+	}
+	if DatadogAPIKey != "" && DatadogAPPKey != "" {
+		client := datadog.NewClient(DatadogAPIKey, DatadogAPPKey)
+		timestamp := float64(time.Now().Unix())
+		err := client.PostMetrics([]datadog.Metric{
+			{
+				Metric: "envoy.time",
+				Points: []datadog.DataPoint{
+					{timestamp, float64(milliseconds)},
+				},
+				Tags: tags,
+			},
+			{
+				Metric: "envoy.hosts",
+				Points: []datadog.DataPoint{
+					{timestamp, float64(hostCount)},
+				},
+				Tags: tags,
+			},
+		})
+		if err != nil {
+			Log("Something went wrong.", "info")
+		}
 	}
 }
