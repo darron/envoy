@@ -7,6 +7,7 @@ import (
 	"os"
 )
 
+// Log sends messages to syslog.
 func Log(message, priority string) {
 	switch {
 	case priority == "debug":
@@ -18,6 +19,7 @@ func Log(message, priority string) {
 	}
 }
 
+// WriteFile takes a string and writes it to filepath.
 func WriteFile(data string, filepath string) {
 	err := ioutil.WriteFile(filepath, []byte(data), os.FileMode(0644))
 	if err != nil {

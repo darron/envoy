@@ -10,23 +10,26 @@ import (
 	"time"
 )
 
+// SearchResult is the struct that describes the Chef server search result.
 type SearchResult struct {
 	Rows []struct {
 		Data struct {
 			Ipaddress string `json:"ipaddress"`
 			Name      string `json:"name"`
 		} `json:"data"`
-		Url string `json:"url"`
+		URL string `json:"url"`
 	} `json:"Rows"`
 	Start int `json:"Start"`
 	Total int `json:"Total"`
 }
 
+// Node decscribes the data that we actually want from the SearchResult.
 type Node struct {
 	Ipaddress string
 	Name      string
 }
 
+// ReadKey reads the PEM encoded key for access to the Chef server.
 func ReadKey(keypath string) string {
 	key, err := ioutil.ReadFile(keypath)
 	if err != nil {
@@ -37,6 +40,7 @@ func ReadKey(keypath string) string {
 	return keyString
 }
 
+// Connect sets up a connection to the Chef server and passed back a client.
 func Connect(key, node, url string) *chef.Client {
 	Log(fmt.Sprintf("create: Connecting to %s with '%s'", url, node), "info")
 	client, err := chef.NewClient(&chef.Config{
@@ -52,6 +56,8 @@ func Connect(key, node, url string) *chef.Client {
 	return client
 }
 
+// GetNodes returns a list of nodes that are present in a particular
+// environment on a Chef server.
 func GetNodes(c *chef.Client, env string) []Node {
 	jsonString := DoSearch(c, env)
 	jsonBytes := []byte(jsonString)
@@ -59,6 +65,8 @@ func GetNodes(c *chef.Client, env string) []Node {
 	return nodes
 }
 
+// DoSearch uses the Chef API to search for all nodes in a particular
+// Chef server.
 func DoSearch(c *chef.Client, env string) string {
 	part := make(map[string]interface{})
 	part["name"] = []string{"name"}
@@ -73,6 +81,8 @@ func DoSearch(c *chef.Client, env string) string {
 	return jsonString
 }
 
+// CleanSearchResult takes the JSON string from the Chef server search and
+// only returns the Nodes that are present.
 func CleanSearchResult(jsonBytes []byte) []Node {
 	nodes := []Node{}
 	var data SearchResult
@@ -91,10 +101,12 @@ func CleanSearchResult(jsonBytes []byte) []Node {
 	return nodes
 }
 
+// RenderFile takes a list of Nodes and concatentates a string for the
+// Nodes that have both a name AND and ip address.
 func RenderFile(n []Node) string {
 	t := time.Now()
 	text := fmt.Sprintf("# Built on %s\n", t.UTC().Format(time.UnixDate))
-	text += fmt.Sprintf("# For environment '%s' on '%s'\n", ChefEnvironment, ChefServerUrl)
+	text += fmt.Sprintf("# For environment '%s' on '%s'\n", ChefEnvironment, ChefServerURL)
 	for _, node := range n {
 		if node.Name != "" && node.Ipaddress != "" {
 			each := fmt.Sprintf("%s %s\n", node.Ipaddress, node.Name)

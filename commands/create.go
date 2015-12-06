@@ -20,7 +20,7 @@ func startCreate(cmd *cobra.Command, args []string) {
 
 	chefKey := ReadKey(ClientKey)
 
-	chefConn := Connect(chefKey, NodeName, ChefServerUrl)
+	chefConn := Connect(chefKey, NodeName, ChefServerURL)
 
 	nodes := GetNodes(chefConn, ChefEnvironment)
 
@@ -41,7 +41,7 @@ func checkFlags() {
 		fmt.Println("Need a node name with access to the Chef Server. --node / -n")
 		os.Exit(1)
 	}
-	if ChefServerUrl == "" {
+	if ChefServerURL == "" {
 		fmt.Println("Need a Chef Server URL. --server / -s")
 		os.Exit(1)
 	}
@@ -57,6 +57,7 @@ func checkFlags() {
 }
 
 var (
+	// FiletoWrite is a variable that tracks where to write the hosts file.
 	FiletoWrite string
 )
 

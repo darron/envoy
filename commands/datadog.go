@@ -7,11 +7,13 @@ import (
 	"time"
 )
 
+// SendStats sends statistics to the Datadog API using either Dogstatsd or the
+// REST API.
 func SendStats(nodes []Node, start time.Time) {
 	elapsed := time.Since(start)
 	hostCount := int(len(nodes))
 	milliseconds := int64(elapsed / time.Millisecond)
-	tags := make([]string, 0)
+	var tags []string
 	envTag := fmt.Sprintf("environment:%s", ChefEnvironment)
 	tags = append(tags, envTag)
 	if DogStatsd {
