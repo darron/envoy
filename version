@@ -1,3 +1,0 @@
-#!/bin/bash
-ENVOY_VERSION="0.4-dev"
-echo $ENVOY_VERSION
