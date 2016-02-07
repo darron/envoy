@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/darron/envoy/commands/"
+	"github.com/darron/envoy/commands"
 	"log"
 	"log/syslog"
 	"os"
