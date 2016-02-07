@@ -6,12 +6,12 @@ BUILD_FLAGS=-X main.CompileDate=$(COMPILE_DATE) -X main.GitCommit=$(GIT_COMMIT) 
 all: build
 
 deps:
-	go get github.com/spf13/cobra
-	go get github.com/PagerDuty/godspeed
-	go get github.com/go-chef/chef
-	go get github.com/davecgh/go-spew/spew
-	go get github.com/zorkian/go-datadog-api
-	go get github.com/darron/envoy
+	go get -u github.com/spf13/cobra
+	go get -u github.com/PagerDuty/godspeed
+	go get -u github.com/go-chef/chef
+	go get -u github.com/davecgh/go-spew/spew
+	go get -u github.com/zorkian/go-datadog-api
+	go get -u github.com/darron/envoy
 
 format:
 	gofmt -w .
