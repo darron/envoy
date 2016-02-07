@@ -11,6 +11,7 @@ deps:
 	go get github.com/go-chef/chef
 	go get github.com/davecgh/go-spew/spew
 	go get github.com/zorkian/go-datadog-api
+	go get github.com/darron/envoy
 
 format:
 	gofmt -w .

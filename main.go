@@ -1,8 +1,8 @@
 package main
 
 import (
-	"./commands/"
 	"fmt"
+	"github.com/darron/envoy/commands/"
 	"log"
 	"log/syslog"
 	"os"
